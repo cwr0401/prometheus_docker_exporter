@@ -1,0 +1,67 @@
+---
+version: '3'
+services:
+  consul:
+    container_name: prod-consul
+    image: consul:latest
+    command: "agent -server -ui"
+    ports:
+      - "8300:8300/tcp"
+      - "8301:8301/tcp"
+      - "8301:8301/udp"
+      - "8302:8302/tcp"
+      - "8302:8302/udp"
+      - "8500:8500/tcp"
+      - "8600:8600/tcp"
+      - "8600:8600/udp"
+    volumes:
+      - ./consul/config:/consul/config
+      - ./consul/data:/consul/data
+    environment:
+      CONSUL_CLIENT_INTERFACE: "eth0"
+      CONSUL_BIND_INTERFACE: "eth0"
+    networks:
+      - prometheus-net
+    logging:
+      driver: json-file
+      options:
+        max-file: '3'
+        max-size: 10m
+  pormetheus:
+    container_name: prod-prometheus
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    restart: always
+    volumes:
+      - ./prometheus/data:/prometheus
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    environment:
+      TZ: 'Asia/Shanghai'
+    networks:
+      - prometheus-net
+    logging:
+      driver: json-file
+      options:
+        max-file: '3'
+        max-size: 10m
+  grafana:
+    container_name: prod-grafana
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    restart: always
+    environment:
+      TZ: 'Asia/Shanghai'
+      # GF_SERVER_ROOT_URL: /grafana
+      GF_SECURITY_ADMIN_PASSWORD: ***
+    networks:
+      - prometheus-net
+    logging:
+      driver: json-file
+      options:
+        max-file: '3'
+        max-size: 10m
+networks:
+  prometheus-net:
+    external: false

@@ -1,0 +1,5 @@
+{
+  "datacenter": "prometheus",
+  "server": true,
+  "enable_debug": true
+}
