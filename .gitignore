@@ -31,4 +31,3 @@ Temporary Items
 .idea/workspace.xml
 prometheus_docker_exporter
 prometheus_docker_exporter_linux
-test_consul

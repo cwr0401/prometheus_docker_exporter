@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	log "github.com/sirupsen/logrus"
 )
 
 var (
@@ -74,8 +73,8 @@ var (
 )
 
 func init() {
-	log.SetFormatter(&log.TextFormatter{FullTimestamp: true})
-	log.SetLevel(log.DebugLevel)
+	// log.SetFormatter(&log.TextFormatter{FullTimestamp: true})
+	// log.SetLevel(log.DebugLevel)
 
 	// Metrics have to be registered to be exposed:
 	registry.MustRegister(memoryLimit)

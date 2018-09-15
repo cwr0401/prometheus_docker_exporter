@@ -4,15 +4,15 @@ services:
   consul:
     container_name: prod-consul
     image: consul:latest
-    command: "agent -server -ui"
+    command: "agent -server -ui -bootstrap"
     ports:
-      - "8300:8300/tcp"
-      - "8301:8301/tcp"
+      - "8300:8300/tcp"  # raft  RPC
+      - "8301:8301/tcp"  # LAN Gossip
       - "8301:8301/udp"
-      - "8302:8302/tcp"
+      - "8302:8302/tcp"  # WAN Gossip
       - "8302:8302/udp"
-      - "8500:8500/tcp"
-      - "8600:8600/tcp"
+      - "8500:8500/tcp"  # HTTP
+      - "8600:8600/tcp"  # DNS
       - "8600:8600/udp"
     volumes:
       - ./consul/config:/consul/config
