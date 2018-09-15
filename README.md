@@ -25,7 +25,7 @@ $ docker run -it -d --rm \
 -e CONSUL_SERVICE_NAME="test-prom-docker-metrics"  \
 -e CONSUL_SERVICE_ID="test-prom-docker-metrics-01" \
 -e CONSUL_SERVICE_PORT=8000 \
--v /var/run/docker.sock:/var/run/docker.sock:ro
+-v /var/run/docker.sock:/var/run/docker.sock:ro \
 cwr0401/prometheus_docker_exporte
 
 $ curl http://127.0.0.1:8000/health
