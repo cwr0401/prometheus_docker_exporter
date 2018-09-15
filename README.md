@@ -1,33 +1,35 @@
 # prometheus_docker_exporter
 
+prometheus docker exporter 用于使用 prometheus 抓取 docker containers stats 信息。
 
 
 ### build
 
 ```shell
-$ go build -o prometheus_docker_exporter main.go collectors.go service.go metrics.go
+$ go build -o prometheus_docker_exporter main.go metrics.go collectors.go service.go 
 
-$ GOOS=linux GOARCH=amd64 go build -o prometheus_docker_exporter_linux main.go collectors.go service.go
+$ GOOS=linux GOARCH=amd64 go build -o prometheus_docker_exporter_linux main.go metrics.go collectors.go service.go
 
 $ docker build -t cwr0401/prometheus_docker_exporter:latest .
 
 ```
 
-### 容器环境变量
-TZ Asia/Shanghai    时区
 
-PROMETHEUS_SCRAPE_PORT   
+### run 
+```shell
+$ docker pull cwr0401/prometheus_docker_exporter:latest
 
-PROMETHEUS_SCRAPE_IP
+$ docker run -it -d --rm \
+-p 8000:8000  \
+-e TZ="Asia/Shanghai"  \
+-e CONSUL_SERVICE_NAME="test-prom-docker-metrics"  \
+-e CONSUL_SERVICE_ID="test-prom-docker-metrics-01" \
+-e CONSUL_SERVICE_PORT=8000 \
+-v /var/run/docker.sock:/var/run/docker.sock:ro
+cwr0401/prometheus_docker_exporte
 
-consul 服务注册信息
+$ curl http://127.0.0.1:8000/health
+ok
 
-CONSUL_SERVICE_ID
-
-CONSUL_ADDRESS
-
-CONSUL_DATACENTER
-
-CONSUL_SERVICE_NAME
-
-CONSUL_SERVICE_TAG
+$ curl http://127.0.0.1:8000/metrics
+```
